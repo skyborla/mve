@@ -1595,7 +1595,7 @@ integral_image (typename Image<I>::ConstPtr image)
     {
         /* Calculate first pixel in row. */
         for (int cc = 0; cc < chans; ++cc)
-            dest[cc] = static_cast<OUT>(inrow[cc]) + prev[cc];
+            dest[cc] = static_cast<O>(inrow[cc]) + prev[cc];
         /* Calculate all following pixels in row. */
         for (int i = chans; i < row_stride; ++i)
             dest[i] = inrow[i] + prev[i] + dest[i - chans] - prev[i - chans];

@@ -1,8 +1,6 @@
 cmake_minimum_required (VERSION 2.8)
 project(mve)
 
-FIND_PACKAGE(PNG REQUIRED)
-
 SET( SOURCE
 mve/bundlefile.cc
 mve/camera.cc
@@ -91,11 +89,12 @@ IF(WIN32)
 	
 ENDIF(WIN32)
 
-
+# PNG SUPPORT
+FIND_PACKAGE(PNG REQUIRED)
 include_directories (./ ${PNG_INCLUDE_DIRS}) 
 link_directories (${PNG_LIBRARIES}) 
 
-add_library(libmve ${HEADER} ${SOURCE})
+add_library(mve ${HEADER} ${SOURCE})
 
 
 #C:/workspace-tud/pmpp_math/libs/
