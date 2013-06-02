@@ -6,6 +6,9 @@
 #include <cstring>
 #include <cerrno>
 
+#define MVE_NO_JPEG_SUPPORT
+#define MVE_NO_TIFF_SUPPORT
+
 #ifndef MVE_NO_PNG_SUPPORT
 #   include <png.h>
 #endif

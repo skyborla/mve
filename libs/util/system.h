@@ -8,6 +8,10 @@
 #include <ctime>
 #include <cstdlib>
 
+#ifdef _WIN32
+#	include <windows.h>
+#endif
+
 #include "util/defines.h"
 
 UTIL_NAMESPACE_BEGIN

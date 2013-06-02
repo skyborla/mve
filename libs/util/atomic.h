@@ -8,9 +8,10 @@
 #ifndef UTIL_ATOMIC_HEADER
 #define UTIL_ATOMIC_HEADER
 
-#if !defined(__GNUG__) && !defined(_WIN64)
-#   error "Atomic operations only supported with GCC or WIN64"
-#endif
+// should work now on win32 as well, see below
+//#if !defined(__GNUG__) && !defined(_WIN64)
+//#   error "Atomic operations only supported with GCC or WIN64"
+//#endif
 
 #ifdef _WIN32
 #   define NOMINMAX
@@ -101,9 +102,11 @@ inline T
 Atomic<T>::increment (void)
 {
 #ifdef _WIN32
-    // http://msdn.microsoft.com/en-us/library/ms683504(v=vs.85).aspx
-    // "This function is supported only on Itanium-based systems."
-    return InterlockedAdd((LONG volatile*)&this->val, 1);
+    // XXX http://msdn.microsoft.com/en-us/library/ms683504(v=vs.85).aspx
+    // XXX "This function is supported only on Itanium-based systems."
+
+	// InterlockedAdd -> InterlockedExchangeAdd
+    return InterlockedExchangeAdd((LONG volatile*)&this->val, 1);
 #else
     return __sync_add_and_fetch(&this->val, 1);
 #endif
@@ -114,7 +117,8 @@ inline T
 Atomic<T>::decrement (void)
 {
 #ifdef _WIN32
-    return InterlockedAdd((LONG volatile*)&this->val, -1);
+	// XXX see above
+    return InterlockedExchangeAdd((LONG volatile*)&this->val, -1);
 #else
     return __sync_sub_and_fetch(&this->val, 1);
 #endif

@@ -11,6 +11,9 @@
 #include "mve/defines.h"
 #include "mve/image.h"
 
+#define MVE_NO_JPEG_SUPPORT
+#define MVE_NO_TIFF_SUPPORT
+
 #ifdef _WIN32
 #   define MVE_NO_TIFF_SUPPORT
 #endif

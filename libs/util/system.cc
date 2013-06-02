@@ -1,7 +1,10 @@
 #include <iostream> // cout
 #include <cstdlib> // ::exit
 #include <csignal>
-#include <execinfo.h> // ::backtrace
+
+#ifndef _WIN32
+	#include <execinfo.h> // ::backtrace
+#endif
 
 #include "util/system.h"
 
@@ -17,8 +20,16 @@ signal_segfault_handler (int code)
     print_stack_trace();
 }
 
-/* ---------------------------------------------------------------- */
-
+/* ----------------------------------------------------------------
+ * TODO execinfo.h is not available on windows
+ */
+#ifdef _WIN32
+void
+print_stack_trace (void)
+{
+	std::cerr << "Your  Stacktrace could be here." << std::endl;
+}
+#else
 void
 print_stack_trace (void)
 {
@@ -37,6 +48,7 @@ print_stack_trace (void)
     std::cerr << "Segmentation fault" << std::endl;
     ::exit(1);
 }
+#endif
 
 UTIL_SYSTEM_NAMESPACE_END
 UTIL_NAMESPACE_END

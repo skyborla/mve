@@ -443,10 +443,12 @@ gamma_correct_inv_srgb (typename Image<T>::Ptr image);
  * Calculates the integral image (or summed area table) for the input image.
  * The integral image is computed channel-wise, i.e. the output image has
  * the same amount of channels as the input image.
+ *
+ * 2013-06-02 Sebastian Fahnenschreiber: compilation fails when typenames are "IN" and "OUT"
  */
-template <typename IN, typename OUT>
-typename Image<OUT>::Ptr
-integral_image (typename Image<IN>::ConstPtr image);
+template <typename I, typename O>
+typename Image<O>::Ptr
+integral_image (typename Image<I>::ConstPtr image);
 
 /**
  * Sums over the rectangle defined by A=(x1,y1) and B=(x2,y2) on the given
@@ -1562,11 +1564,12 @@ gamma_correct_inv_srgb (typename Image<T>::Ptr image)
     }
 }
 
-/* ---------------------------------------------------------------- */
-
-template <typename IN, typename OUT>
-typename Image<OUT>::Ptr
-integral_image (typename Image<IN>::ConstPtr image)
+/* ---------------------------------------------------------------- 
+ * 2013-06-02 Sebastian Fahnenschreiber: compilation fails when typenames are "IN" and "OUT"
+ */
+template <typename I, typename O>
+typename Image<O>::Ptr
+integral_image (typename Image<I>::ConstPtr image)
 {
     if (!image.get())
         throw std::invalid_argument("NULL image given");
@@ -1576,14 +1579,14 @@ integral_image (typename Image<IN>::ConstPtr image)
     int const chans = image->channels();
     int const row_stride = width * chans;
 
-    typename Image<OUT>::Ptr ret(Image<OUT>::create());
+    typename Image<O>::Ptr ret(Image<O>::create());
     ret->allocate(width, height, chans);
 
     /* Input image row and destination image rows. */
-    std::vector<OUT> zeros(row_stride, OUT(0));
-    IN const* inrow = image->get_data_pointer();
-    OUT* dest = ret->get_data_pointer();
-    OUT* prev = &zeros[0];
+    std::vector<O> zeros(row_stride, O(0));
+    I const* inrow = image->get_data_pointer();
+    O* dest = ret->get_data_pointer();
+    O* prev = &zeros[0];
 
     /*
      * I(x,y) = i(x,y) + I(x-1,y) + I(x,y-1) - I(x-1,y-1)
