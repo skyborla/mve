@@ -13,5 +13,11 @@ include_directories(../)
 
 add_library(mve ${mve_HEADER} ${mve_SOURCE})
 
+# PNG SUPPORT
+FIND_PACKAGE(PNG REQUIRED)
+include_directories (./ ${PNG_INCLUDE_DIRS}) 
+link_directories (${PNG_LIBRARIES}) 
+
+
 target_link_libraries(mve util)
 
