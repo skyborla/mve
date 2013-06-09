@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <set>
 #include <ctime>
+#include <cmath>
 
 #include "math/vector.h"
 #include "mve/image.h"
@@ -241,8 +242,13 @@ void DMRecon::processFeatures()
             continue;
         }
         math::Vec2f pixPosF = refV->worldToScreen(featPos);
-        int x = round(pixPosF[0]);
-        int y = round(pixPosF[1]);
+
+		// round is c++11 ?
+        int x = (pixPosF[0] > 0.0) ? floor(pixPosF[0] + 0.5) : ceil(pixPosF[0] - 0.5);
+		int y = (pixPosF[1] > 0.0) ? floor(pixPosF[1] + 0.5) : ceil(pixPosF[1] - 0.5);
+		//int x = round(pixPosF[0]);
+        //int y = round(pixPosF[1]);
+
         float initDepth = (featPos - refV->camPos).norm();
         PatchOptimization patch(views, settings, x, y, initDepth,
             0.f, 0.f, neighViews, IndexSet());
