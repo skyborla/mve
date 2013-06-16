@@ -106,7 +106,8 @@ Atomic<T>::increment (void)
     // XXX "This function is supported only on Itanium-based systems."
 
 	// InterlockedAdd -> InterlockedExchangeAdd
-    return InterlockedExchangeAdd((LONG volatile*)&this->val, 1);
+    InterlockedExchangeAdd((LONG volatile*)&this->val, 1);
+	return this->val;
 #else
     return __sync_add_and_fetch(&this->val, 1);
 #endif
@@ -118,7 +119,8 @@ Atomic<T>::decrement (void)
 {
 #ifdef _WIN32
 	// XXX see above
-    return InterlockedExchangeAdd((LONG volatile*)&this->val, -1);
+    InterlockedExchangeAdd((LONG volatile*)&this->val, -1);
+	return this->val;
 #else
     return __sync_sub_and_fetch(&this->val, 1);
 #endif

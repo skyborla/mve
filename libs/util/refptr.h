@@ -27,7 +27,7 @@ public:
     int use_count (void) const;
 
 private:
-    Atomic<int> count;
+    Atomic<LONG> count;
 };
 
 /**
