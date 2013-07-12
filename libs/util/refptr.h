@@ -27,7 +27,11 @@ public:
     int use_count (void) const;
 
 private:
+#ifdef _WIN32
     Atomic<LONG> count;
+#else
+	Atomic<int> count;
+#endif
 };
 
 /**
